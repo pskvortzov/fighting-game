@@ -8,68 +8,25 @@ c.fillRect(0, 0, canvas.width, canvas.height);
 
 const gravity = 0.7;
 
-class Sprite {
-	constructor({position, velocity, color, offset}) {
-		this.position = position;
-		this.velocity = velocity;
-		this.color = color;
-		this.height = 150;
-		this.width = 50;
-		this.health = 100;
-		this.lastKey;
-		this.attackBox = {
-			position: {
-				x: this.position.x,
-				y: this.position.y
-			},
-			offset,
-			width: 100,
-			height: 50
-		};
-		this.isAttacking = false;
-	}
+const background = new Sprite({
+	position: {
+		x: 0,
+		y: 0
+	},
+	imageSrc: './img/background.png'
+});
 
-	draw() {
-		c.fillStyle = this.color;
-		c.fillRect(this.position.x, this.position.y, this.width, this.height);
+const shop = new Sprite({
+	position: {
+		x: 600,
+		y: 128
+	},
+	imageSrc: './img/shop.png',
+	framesMax: 6,
+	scale: 2.75
+});
 
-		if (this.isAttacking) {
-			c.fillStyle = 'green';
-			c.fillRect(
-				this.attackBox.position.x,
-				this.attackBox.position.y,
-				this.attackBox.width,
-				this.attackBox.height
-			);
-		}
-	}
-
-	update() {
-		this.draw();
-
-		this.attackBox.position.x = this.position.x + this.attackBox.offset.x;
-		this.attackBox.position.y = this.position.y;
-
-		this.position.x += this.velocity.x;
-		this.position.y += this.velocity.y;
-
-		if (this.position.y + this.height + this.velocity.y >= canvas.height) {
-			this.	velocity.y = 0;
-		} else {
-			this.velocity.y += gravity;
-		}
-	}
-
-	attack() {
-		this.isAttacking = true;
-
-		setTimeout(() => {
-			this.isAttacking = false;
-		}, 100);
-	}
-}
-
-const player = new Sprite({
+const player = new Fighter({
 	position: {
 		x: 0,
 		y: 0
@@ -78,14 +35,38 @@ const player = new Sprite({
 		x: 0,
 		y: 0
 	},
+	imageSrc: './img/samurai/Idle.png',
+	framesMax: 8,
+	scale: 2.5,
 	offset: {
-		x: 0,
-		y: 0
+		x: 180,
+		y: 156
 	},
-	color: 'red'
+	sprites: {
+		idle: {
+			imageSrc: './img/samurai/Idle.png',
+			framesMax: 8
+		},
+		run: {
+			imageSrc: './img/samurai/Run.png',
+			framesMax: 8
+		},
+		jump: {
+			imageSrc: './img/samurai/Jump.png',
+			framesMax: 2
+		},
+		fall: {
+			imageSrc: './img/samurai/Fall.png',
+			framesMax: 2
+		},
+		attack1: {
+			imageSrc: './img/samurai/Attack1.png',
+			framesMax: 6
+		}
+	}
 });
 
-const enemy = new Sprite({
+const enemy = new Fighter({
 	position: {
 		x: 400,
 		y: 100
@@ -94,11 +75,13 @@ const enemy = new Sprite({
 		x: 0,
 		y: 0
 	},
+	imageSrc: './img/kenji/Idle.png',
+	framesMax: 4,
+	scale: 2.5,
 	offset: {
-		x: -50,
-		y: 0
-	},
-	color: 'blue'
+		x: 180,
+		y: 170
+	}
 });
 
 const keys = {
@@ -119,29 +102,6 @@ const keys = {
 	}
 };
 
-function rectangularCollision({rectangle1, rectangle2}) {
-	return (rectangle1.attackBox.position.x + rectangle1.attackBox.width > rectangle2.position.x &&
-		rectangle1.attackBox.position.x < rectangle2.position.x + rectangle2.width &&
-		rectangle1.attackBox.position.y + rectangle1.attackBox.height > rectangle2.position.y &&
-		rectangle1.attackBox.position.y < rectangle2.position.y + rectangle2.height);
-}
-
-function determineWinner({player, enemy, timerId}) {
-	clearTimeout(timerId);
-	document.querySelector('#displayText').style.display = 'flex';
-
-	if (player.health === enemy.health) {
-		document.querySelector('#displayText').innerHTML = 'Tie';
-	} else if (player.health > enemy.health) {
-		document.querySelector('#displayText').innerHTML = 'Player 1 won';
-	} else if (enemy.health > player.health) {
-		document.querySelector('#displayText').innerHTML = 'Player 2 won';
-	}
-}
-
-let timer = 60;
-let timerId;
-
 function decreaseTimer() {
 	if (timer > 0) {
 		timerId = setTimeout(decreaseTimer, 1000);
@@ -158,14 +118,28 @@ function animate() {
 	window.requestAnimationFrame(animate);
 	c.fillStyle = 'black';
 	c.fillRect(0, 0, canvas.width, canvas.height);
+
+	background.update();
+	shop.update();
 	player.update();
 	enemy.update();
 
 	player.velocity.x = 0;
+
 	if (keys.a.pressed && player.lastKey === 'a') {
 		player.velocity.x = -5;
+		player.switchSprite('run');
 	} else if (keys.d.pressed && player.lastKey === 'd') {
 		player.velocity.x = 5;
+		player.switchSprite('run');
+	} else {
+		player.switchSprite('idle');
+	}
+
+	if (player.velocity.y < 0) {
+		player.switchSprite('jump');
+	} else if (player.velocity.y > 0) {
+		player.switchSprite('fall');
 	}
 
 	enemy.velocity.x = 0;
