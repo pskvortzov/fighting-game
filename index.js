@@ -21,11 +21,11 @@ const background = new Sprite({
 const shop = new Sprite({
 	position: {
 		x: 600,
-		y: 128
+		y: 96
 	},
 	imageSrc: './img/shop.png',
 	framesMax: 6,
-	scale: 2.75
+	scale: 3
 });
 
 const player = new Fighter({
@@ -39,7 +39,7 @@ const player = new Fighter({
 	},
 	imageSrc: './img/samurai/Idle.png',
 	framesMax: 8,
-	scale: 2.5,
+	scale: 3,
 	offset: {
 		x: 180,
 		y: 156
@@ -95,10 +95,10 @@ const enemy = new Fighter({
 	},
 	imageSrc: './img/kenji/Idle.png',
 	framesMax: 4,
-	scale: 2.5,
+	scale: 3,
 	offset: {
 		x: 180,
-		y: 170
+		y: 174
 	},
 	sprites: {
 		idle: {

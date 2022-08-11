@@ -104,9 +104,9 @@ class Fighter extends Sprite {
 		this.position.x += this.velocity.x;
 		this.position.y += this.velocity.y;
 
-		if (this.position.y + this.height + this.velocity.y >= canvas.height - 96) {
+		if (this.position.y + this.height + this.velocity.y >= canvas.height - 170) {
 			this.velocity.y = 0;
-			this.position.y = 330;
+			this.position.y = 270;
 		} else {
 			this.velocity.y += gravity;
 		}
@@ -132,7 +132,7 @@ class Fighter extends Sprite {
 			if (this.framesCurrent === this.sprites.death.framesMax - 1) {
 				this.dead = true;
 			}
-			
+
 			return;
 		}
 
