@@ -185,11 +185,15 @@ function animate() {
 	player.velocity.x = 0;
 
 	if (keys.a.pressed && player.lastKey === 'a') {
-		player.velocity.x = -5;
 		player.switchSprite('run');
+		if (player.position.x > -80) {
+			player.velocity.x = -5;
+		}
 	} else if (keys.d.pressed && player.lastKey === 'd') {
-		player.velocity.x = 5;
 		player.switchSprite('run');
+		if (player.position.x < 870) {
+			player.velocity.x = 5;
+		}
 	} else {
 		player.switchSprite('idle');
 	}
@@ -202,11 +206,15 @@ function animate() {
 
 	enemy.velocity.x = 0;
 	if (keys.ArrowLeft.pressed && enemy.lastKey === 'ArrowLeft') {
-		enemy.velocity.x = -5;
 		enemy.switchSprite('run');
+		if (enemy.position.x > -80) {
+			enemy.velocity.x = -5;
+		}
 	} else if (keys.ArrowRight.pressed && enemy.lastKey === 'ArrowRight') {
-		enemy.velocity.x = 5;
 		enemy.switchSprite('run');
+		if (enemy.position.x < 880) {
+			enemy.velocity.x = 5;
+		}
 	} else {
 		enemy.switchSprite('idle');
 	}

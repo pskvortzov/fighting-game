@@ -131,6 +131,7 @@ class Fighter extends Sprite {
 		if (this.image === this.sprites.death.image) {
 			if (this.framesCurrent === this.sprites.death.framesMax - 1) {
 				this.dead = true;
+				this.velocity.x = 0;
 			}
 
 			return;
