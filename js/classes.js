@@ -96,8 +96,6 @@ class Fighter extends Sprite {
 			this.animateFrames();
 		}
 
-		// c.fillRect(this.position.x, this.position.y, this.width, this.height);
-
 		this.attackBox.position.x = this.position.x + this.attackBox.offset.x;
 		this.attackBox.position.y = this.position.y + this.attackBox.offset.y;
 
@@ -132,7 +130,8 @@ class Fighter extends Sprite {
 			if (this.framesCurrent === this.sprites.death.framesMax - 1) {
 				this.dead = true;
 				this.velocity.x = 0;
-			}
+				console.log(this.velocity.x);
+				}
 
 			return;
 		}
