@@ -1,0 +1,2 @@
+# Fighting Game
+This is a simple fighting game built according to an amazing [tutorial](https://chriscourses.com/courses/fighting-game/videos/project-setup) by Christopher Lis. You can try it out [here](https://pskv.me/fighting-game/). 
